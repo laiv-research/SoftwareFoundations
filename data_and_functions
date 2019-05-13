@@ -1,0 +1,244 @@
+(* 'Type': A set of data values *)
+
+(* Enumerated type: Here the 'Type' is called 'day' and its 
+   members are the days monday to tuesday. *)
+Inductive day : Type := 
+  | monday 
+  | tuesday
+  | wednesday
+  | thursday
+  | friday
+  | saturday
+  | sunday.
+
+(* 'following_day' is a function that operates 
+   on the 'Type' 'day': *)
+Definition following_day (d:day) : day :=
+  match d with
+  | monday => tuesday
+  | tuesday => wednesday
+  | wednesday => thursday
+  | thursday => friday
+  | friday => saturday
+  | saturday => sunday
+  | sunday => monday
+  end.
+
+(* Run the function: *)
+Compute (following_day monday).
+Compute (following_day (following_day friday)).
+
+(* Make an assertion called 'test_following_day' 
+   about a result of the returned value of 
+   'following_day':  We expect the result to be
+   'tuesday'*)
+Example test_following_day:
+  (following_day (following_day saturday)) = monday.
+Proof. simpl. reflexivity. Qed.
+
+(* From scratch implementation of boolean values and
+   functions which operate on them. *)
+
+Inductive bool : Type :=
+  | true
+  | false.
+
+(* Receives a value of type bool and returns a value
+   of type bool. *)
+Definition logical_negation (b:bool) : bool :=
+  match b with
+  | true => false
+  | false => true
+  end.
+
+Definition logical_and (b1:bool) (b2:bool) : bool :=
+  match b1 with
+  | true => b2
+  | false => false
+  end. 
+
+Definition logical_or (b1:bool) (b2:bool) : bool :=
+  match b1 with 
+  | true => true
+  | false => b2
+  end.
+
+(* A unit test for the logical_or function: *)
+
+Example test_logical_or1: (logical_or true false) = true.
+Proof. simpl. reflexivity. Qed.
+
+Example test_logical_or2: (logical_or true true) = true.
+Proof. simpl. reflexivity. Qed.
+
+Example test_logical_or3: (logical_or false false) = false.
+Proof. simpl. reflexivity. Qed.
+
+Example test_logical_or4: (logical_or false true) = true.
+Proof. simpl. reflexivity. Qed.
+
+(* Symbolic notation for an existing definition. *)
+Notation "x && y" := (logical_and x y).
+Notation "x || y" := (logical_or x y).
+
+(* Test the introduced notations: *)
+Example notation_test1_logical_or: true || false = true.
+Proof. simpl. reflexivity. Qed.
+
+(* Type checking: *)
+Check monday.
+(* ===> monday: day *)
+
+Check true.
+(* ===> true : bool *)
+
+Check logical_negation.
+Check logical_and.
+
+(* Types with constructor arguments: *)
+
+Inductive rgb : Type :=
+  | red
+  | green
+  | blue.
+
+Inductive color : Type := 
+  | black
+  | white
+  | primary (p : rgb).
+
+Definition is_monochrome (c : color) : bool := 
+  match c with
+  | black => true
+  | white => true
+  | primary q => false
+  end.
+
+(* Tuples: *)
+
+Inductive bit : Type :=
+  | B0
+  | B1.
+
+Inductive nybble : Type :=
+  | bits (b0 b1 b2 b3 b4 : bit).
+
+Check (bits B0 B1 B0 B1).
+
+(* Bilding infinte sets of variables: *)
+
+(* 'Start' represents zero; 'Step' represents the successor. 
+*)
+(* Inductive nat :Type :=
+  | Start
+  | Step (n : nat).
+ *)
+
+(* Definition predecessor (n : nat) : nat :=
+  match n with
+  | Start => Start
+  | Step n => n
+  end.heck (Step Start).
+
+Check 1.
+Compute (predecessor (Step Start)).
+Compute (predecessor (Step (Step Start))). *)
+
+(* Exercise 1:  Negation of logical-and function: *)
+
+Definition not_logical_and (b1:bool) (b2:bool) : bool :=
+  match b1 with 
+  | true => logical_negation b2
+  | false => true 
+  end.
+
+(* A nested function: *)
+Definition not_logical_and_2 (b1:bool) (b2:bool) : bool :=
+  logical_negation (logical_and b1 b2).
+
+Example test_nandb1: (not_logical_and true false) = true.
+Proof. simpl. reflexivity. Qed.
+
+Example test_nandb2: (not_logical_and false false) = true.
+Proof. simpl. reflexivity. Qed.
+
+Example test_nandb3: (not_logical_and false true) = true.
+Proof. simpl. reflexivity. Qed.  
+
+Example test_nandb4: (not_logical_and true true) = false.
+Proof. simpl. reflexivity. Qed.  
+
+(* Define namespaces: *)
+
+Definition add (n:nat) : nat :=
+  n - 1.
+
+Example test_false_add: (add 1) = 0.
+Proof. simpl. reflexivity. Qed.
+
+(* 'Module' and 'End' define a namespace. Function that
+   are defined inside this namespace *)
+Module ActualAdd.
+
+Definition add (n:nat) : nat :=
+  n + 1.
+
+Example test_actaul_add: (add 1) = 2.
+Proof. simpl. reflexivity. Qed.
+(* Example test_actaul_add: (add 2) = 2.
+Proof. simpl. reflexivity. Qed. *)
+
+Definition subtract_2 (n:nat) : nat :=
+  n - 2.
+
+(* 1. You can use functions and types defined in the global 
+   namespace ... *)
+Definition not_logical_and_2 (b1:bool) (b2:bool) : bool :=
+  logical_negation (logical_and b1 b2).
+
+End ActualAdd.
+
+Example test_false_add2: (add 2) = 1.
+Proof. simpl. reflexivity. Qed.
+
+(* ... but you cannot use function defined in a local 
+   namespace like 'ActualAdd'. The line below throws
+   an error: *)
+(* Example test_subtract_2: (subtract_2 5) = 3.
+Proof. simpl. reflexivity. Qed. *)
+
+(* To define a recursive function, so a function that calls
+   itself, one has to use the keyword 'Fixpoint'. *)
+Fixpoint is_even (n:nat) : bool :=
+  match n with
+  | O => true
+  | S O => false
+  | S (S n') => is_even n'
+  end.
+
+Example test_is_even: (is_even 10) = true.
+Proof. simpl. reflexivity. Qed.
+
+(* Exercise 2: Factorial *)
+
+Fixpoint factorial (n:nat) : nat :=
+  match n with
+  | 0 => 1
+  | S n => S n * factorial (n)
+  end.
+
+Example test_factorial1: (factorial 3) = 6.
+Proof. simpl. reflexivity. Qed. 
+
+Example test_factorial2: (factorial 5) = (mult 10 12).
+Proof. simpl. reflexivity. Qed.
+
+(* Note: Coq does not recognize that the recursive function
+   is terminating / decreasing, so it throws an error. *)
+(* Fixpoint factorial_2 (n:nat) : nat :=
+  match n with
+  | 0 => 1
+  | n => n * factorial_2 (n-1)
+  end.  *)
+
+
