@@ -1,0 +1,66 @@
+(* Destruct creates two subgoals because there are
+   two constructoirs in the definition if the type
+   natural numbers. *)
+Theorem plus_1_neq_0 : forall n : nat,
+  Nat.eqb (n + 1) 0 = false.
+Proof.
+  intros n. destruct n.
+  - reflexivity.
+  - reflexivity. Qed.
+
+(* In the square brackets we introduce names for
+   the variables used in that branch. The names 
+   for each branch are seprated by vertical lines 
+  |. *)
+Theorem plus_1_neq_0_1 : forall n : nat,
+  Nat.eqb (n + 1) 0 = false.
+Proof.
+  intros n. destruct n as [| n'].
+  - reflexivity.
+  - reflexivity. Qed.
+
+Theorem plus_1_neq_0_2 : forall n : nat,
+  Nat.eqb (n + 1) 0 = false.
+Proof.
+  intros n. destruct n as [| n'] eqn:E.
+  - reflexivity.
+  - reflexivity. Qed.
+
+(* Again, we have two subgoals because the 
+   bool type as two constructors. *)  
+Theorem negb_involutive : forall b : bool,
+  negb (negb b) = b.
+Proof.
+  intros b. destruct b.
+  - reflexivity.
+  - reflexivity. Qed.
+
+Theorem andb_commutative : forall b c, andb b c = andb c b.
+Proof.
+  intros b c. destruct b eqn:Eb.
+  { destruct c eqn:Ec.
+    { reflexivity. }
+    { reflexivity. } }
+  { destruct c eqn:Ec.
+    { reflexivity. }
+    { reflexivity. } }
+Qed.
+
+(* Syntactic sugar: *)
+Theorem plus_1_neq_0' : forall n : nat,
+  Nat.eqb (n + 1) 0 = false.
+Proof.
+  intros [|n].
+  - reflexivity.
+  - reflexivity. Qed.
+
+Theorem andb_commutative'' :
+  forall b c, andb b c = andb c b.
+Proof.
+  intros [|] [|].
+  - reflexivity.
+  - reflexivity.
+  - reflexivity.
+  - reflexivity.
+Qed.
+
