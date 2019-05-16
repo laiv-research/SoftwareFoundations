@@ -1,0 +1,32 @@
+Theorem zero_plus_n: forall n : nat, 0 + n = n.
+Proof. intros n. simpl. reflexivity. Qed.
+
+(* simpl. is not needed, because reflexivity can 
+   perform simplification by itself. So a shorter way 
+   to write the above Theorem is: *)
+Theorem zero_plus_n_short: forall n : nat, 0 + n = n.
+Proof. intros n. reflexivity. Qed.
+
+(* The left hand side neds to be 1 + n and not
+   n + 1 because of the way the standard + is 
+   defined. *)
+Theorem one_plus_n: forall n : nat, 1 + n = S n.
+Proof. intros n. simpl. reflexivity. Qed.
+
+(* We define a new add function ++ that 
+   accepts the n + 1 on the left hand side by making
+   the matching on the second argument. *)
+Fixpoint my_add (a : nat) (b : nat) : nat :=
+  match b with
+  | O => a
+  | S a' => S (my_add a a')
+  end.
+
+(* Define the new add function by two pluses. *)
+Notation "x ++ y" := (my_add x y).
+
+Theorem one_plus_n1: forall n : nat, n ++ 1 = S n.
+Proof. intros n. simpl. reflexivity. Qed.
+
+Theorem multiplication_by_zero: forall n : nat, 0 * n = 0.
+Proof. intros n. simpl. reflexivity. Qed.
