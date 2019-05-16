@@ -1,0 +1,22 @@
+Theorem id_plus: forall n m : nat,
+  n = m -> n + n = m + m.
+Proof. intros n m. intros H. rewrite -> H. reflexivity. Qed.
+
+(* Exercise 1: plus_id_exercise: *)
+Theorem plus_id_exercise : forall n m o : nat, 
+  n = m -> m = o -> n + m = m + o.
+Proof. intros m n o. intros H. rewrite -> H. intros H1. rewrite -> H1. reflexivity. Qed.
+
+(* Exercise 2: mult_S_1 *)
+Theorem mult_S_1: forall n m : nat,
+  m = S n -> m * (1 + n) = m * m.
+Proof. intros n m. intros H. rewrite -> H. simpl. reflexivity. Qed.
+
+(* Define successor function S n = n + 1 to be used
+   in the Theorem mult_S_1_2: *)
+Theorem successor_n: forall n : nat, 1 + n = S n.
+Proof. intros n. simpl. reflexivity. Qed.
+
+Theorem mult_S_1_2: forall n m : nat,
+  m = S n -> m * (1 + n) = m * m.
+Proof. intros n m. intros H. rewrite -> H. rewrite <- successor_n. reflexivity. Qed.
