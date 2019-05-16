@@ -1,5 +1,5 @@
 # SoftwareFoundations
-For general information and the schedule pleae check the wiki.
+For general information and the schedule please check the wiki.
 
 The collection of code files used in the meetings.
 
