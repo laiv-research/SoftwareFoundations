@@ -1,0 +1,56 @@
+Theorem plus_n_O : forall n : nat, n = n + 0.
+Proof.
+  intros n. induction n.
+  - (* n = 0 *) reflexivity.
+  - (* n = S n' *) simpl. rewrite <- IHn.   reflexivity. 
+Qed.
+
+Theorem minus_diag : forall n,
+  minus n n = 0.
+Proof.
+  intros n. induction n.
+  - (* n = 0 *)
+    simpl. reflexivity.
+  - (* n = S n' *)
+    simpl. rewrite -> IHn. reflexivity. Qed.
+
+Theorem mult_0_r : forall n : nat,
+  n * 0 = 0.
+Proof.
+intros n. induction n.
+  - simpl. reflexivity.
+  - simpl. rewrite -> IHn. reflexivity. 
+Qed.
+
+Theorem plus_n_Sm : forall n m : nat,
+  S (n + m) = n + (S m).
+Proof. 
+  intros n m. induction n.
+  - simpl. reflexivity. 
+  - simpl. rewrite -> IHn. reflexivity. 
+Qed.
+
+(* S n = n + 1 *)
+Theorem n_plus_1 : forall n : nat,
+  S n = n + 1.
+Proof. intros n. induction n.
+  - simpl. reflexivity.
+  - simpl. rewrite <- IHn. reflexivity.
+Qed.
+
+(* Induction on the other varialbe gets you stuck: *)
+Theorem plus_n_Sm_1 : forall n m : nat,
+  S (n + m) = n + (S m).
+Proof. 
+  intros n m. induction m as [|m'].
+  - simpl. rewrite <- plus_n_O. rewrite n_plus_1. reflexivity.
+  - simpl. rewrite <- IHm'. Abort.
+
+Theorem plus_comm : forall n m : nat,
+  n + m = m + n.
+Proof.
+intros n m. induction n.
+  - simpl. rewrite <- plus_n_O. reflexivity.
+  - simpl. rewrite <- plus_n_Sm. rewrite -> IHn. reflexivity. 
+Qed.
+
