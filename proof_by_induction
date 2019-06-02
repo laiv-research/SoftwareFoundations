@@ -54,3 +54,57 @@ intros n m. induction n.
   - simpl. rewrite <- plus_n_Sm. rewrite -> IHn. reflexivity. 
 Qed.
 
+(* Code below belongs to section 'prrof within proofs. *)
+
+(* This doesn't work because the rewrite statements does not where to apply the rewrite. *)
+Theorem plus_rearrange_firsttry : forall n m p q : nat,
+  (n + m) + (p + q) = (m + n) + (p + q).
+Proof.
+  intros n m p q.
+  (* We just need to swap (n + m) for (m + n)... 
+   seems
+   like plus_comm should do the trick! *)
+  rewrite -> plus_comm.
+  (* Doesn't work...Coq rewrites the wrong plus! *)
+Abort.
+
+Theorem plus_rearrange : forall n m p q : nat,
+  (n + m) + (p + q) = (m + n) + (p + q).
+Proof.
+  intros n m p q.
+  assert (H: n + m = m + n).
+  { rewrite -> plus_comm. reflexivity. }
+  rewrite -> H. reflexivity. Qed.
+
+Fixpoint evenb (n : nat) : bool :=
+  match n with
+  | O => true
+  | S n => negb (evenb n)
+  end.
+
+Theorem evenb_S : forall n : nat,
+  evenb (S n) = negb (evenb n).
+Proof. intros n. simpl. reflexivity. Qed.
+
+Fixpoint evenb2 (n : nat) : bool :=
+  match n with
+  | O => true
+  | S O => false
+  | S (S n') => evenb2 n'
+end.
+
+(* 'Proof. admit. Admitted.' Assumes the theorem is
+true so that on can continue to work with it. *)
+Theorem double_neg : forall b : bool,
+  negb (negb b) = b.
+Proof. intros b.  destruct b. 
+  + simpl. reflexivity.
+  + simpl. reflexivity.
+Qed.
+
+Theorem evenb2_S : forall n : nat,
+  evenb2 (S n) = negb (evenb2 n).
+Proof. intros n. induction n.
+  + simpl. reflexivity.
+  + rewrite -> IHn. simpl. rewrite double_neg. reflexivity. 
+Qed.

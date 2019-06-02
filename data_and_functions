@@ -24,14 +24,32 @@ Definition following_day (d:day) : day :=
   | sunday => monday
   end.
 
-(* Run the function: *)
+
+(* The wildcard operator '_' works as placeholder for all values passed that are not explicitly mentioned in the cases before. It can be seen as 
+an 'else' statement. *)
+Definition following_day_wc (d:day) : day :=
+  match d with
+  (* if monday: return tuesday *)
+  | monday => tuesday
+  (* elif tuesday: return wednesday *)
+  | tuesday => wednesday
+  (* elif wednesday: return thurday *)
+  | wednesday => thursday
+  (* else: return friday *)
+  | _ => friday
+  end.
+
+(* Run the function once: *)
 Compute (following_day monday).
+(* Function composition: *)
 Compute (following_day (following_day friday)).
 
 (* Make an assertion called 'test_following_day' 
    about a result of the returned value of 
    'following_day':  We expect the result to be
-   'tuesday'*)
+   'tuesday';
+   simpl: Simplify both sides of the equation,
+   reflexivity: check that both sides contain the same value*)
 Example test_following_day:
   (following_day (following_day saturday)) = monday.
 Proof. simpl. reflexivity. Qed.
@@ -138,7 +156,7 @@ Check (bits B0 B1 B0 B1).
   match n with
   | Start => Start
   | Step n => n
-  end.heck (Step Start).
+  end.check (Step Start).
 
 Check 1.
 Compute (predecessor (Step Start)).
@@ -207,8 +225,9 @@ Proof. simpl. reflexivity. Qed.
 (* Example test_subtract_2: (subtract_2 5) = 3.
 Proof. simpl. reflexivity. Qed. *)
 
-(* To define a recursive function, so a function that calls
-   itself, one has to use the keyword 'Fixpoint'. *)
+(* To define a recursive function, so a function   
+   that calls itself, one has to use the keyword 
+   'Fixpoint'. *)
 Fixpoint is_even (n:nat) : bool :=
   match n with
   | O => true
@@ -220,7 +239,6 @@ Example test_is_even: (is_even 10) = true.
 Proof. simpl. reflexivity. Qed.
 
 (* Exercise 2: Factorial *)
-
 Fixpoint factorial (n:nat) : nat :=
   match n with
   | 0 => 1
@@ -233,10 +251,11 @@ Proof. simpl. reflexivity. Qed.
 Example test_factorial2: (factorial 5) = (mult 10 12).
 Proof. simpl. reflexivity. Qed.
 
-(* Note: Coq does not recognize that the recursive function
-   is terminating / decreasing, so it throws an error. *)
+(* Note: Coq does not recognize that the recursive f
+   function is terminating / decreasing, so it 
+   throws an error. *)
 (* Fixpoint factorial_2 (n:nat) : nat :=
-  match n with
+   match n with
   | 0 => 1
   | n => n * factorial_2 (n-1)
   end.  *)

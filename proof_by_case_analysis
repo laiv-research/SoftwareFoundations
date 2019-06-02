@@ -1,5 +1,5 @@
 (* Destruct creates two subgoals because there are
-   two constructoirs in the definition if the type
+   two constructors in the definition if the type
    natural numbers. *)
 Theorem plus_1_neq_0 : forall n : nat,
   Nat.eqb (n + 1) 0 = false.
@@ -10,7 +10,7 @@ Proof.
 
 (* In the square brackets we introduce names for
    the variables used in that branch. The names 
-   for each branch are seprated by vertical lines 
+   for each branch are separated by vertical lines 
   |. *)
 Theorem plus_1_neq_0_1 : forall n : nat,
   Nat.eqb (n + 1) 0 = false.
@@ -63,4 +63,3 @@ Proof.
   - reflexivity.
   - reflexivity.
 Qed.
-
