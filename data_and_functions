@@ -24,7 +24,6 @@ Definition following_day (d:day) : day :=
   | sunday => monday
   end.
 
-
 (* The wildcard operator '_' works as placeholder for all values passed that are not explicitly mentioned in the cases before. It can be seen as 
 an 'else' statement. *)
 Definition following_day_wc (d:day) : day :=
@@ -254,10 +253,12 @@ Proof. simpl. reflexivity. Qed.
 (* Note: Coq does not recognize that the recursive f
    function is terminating / decreasing, so it 
    throws an error. *)
-(* Fixpoint factorial_2 (n:nat) : nat :=
+Fixpoint factorial_2 (n:nat) : nat :=
    match n with
   | 0 => 1
-  | n => n * factorial_2 (n-1)
-  end.  *)
+  (* n => factorial_2 (n) * (n+1) doe not work *)
+  | S n => factorial_2 (n) * (n + 1)
+  end. 
 
-
+Example test_factorial_2: (factorial_2 4) = 24.
+Proof. simpl. reflexivity. Qed.

@@ -8,9 +8,16 @@ Theorem plus_id_exercise : forall n m o : nat,
 Proof. intros m n o. intros H. rewrite -> H. intros H1. rewrite -> H1. reflexivity. Qed.
 
 (* Exercise 2: mult_S_1 *)
+(* What does the smplification do here? *)
 Theorem mult_S_1: forall n m : nat,
   m = S n -> m * (1 + n) = m * m.
 Proof. intros n m. intros H. rewrite -> H. simpl. reflexivity. Qed.
+
+(* Exercise 2: mult_S_1 *)
+(* What does the smplification do here? *)
+Theorem mult_S_2: forall n m : nat,
+  m = S n -> n + 1 = S n -> m * (n + 1) = m * m.
+Proof. intros n m. intros H. rewrite -> H. intros G. rewrite -> G. reflexivity. Qed.
 
 (* Define successor function S n = n + 1 to be used
    in the Theorem mult_S_1_2: *)
@@ -20,3 +27,21 @@ Proof. intros n. simpl. reflexivity. Qed.
 Theorem mult_S_1_2: forall n m : nat,
   m = S n -> m * (1 + n) = m * m.
 Proof. intros n m. intros H. rewrite -> H. rewrite <- successor_n. reflexivity. Qed.
+
+(* Define S n as n+ 1. 
+ *)
+Theorem actual_add : forall n : nat,
+  S n = n + 1.
+Proof. intros n. induction n.
+  - simpl. reflexivity.
+  - simpl. rewrite <- IHn. reflexivity.
+Qed.
+
+Theorem actual_add_2 : forall n : nat,
+  S n = n + 1.
+Proof. Admitted.
+
+Theorem mult_S_1_3: forall n m : nat,
+  m = S n -> m * (n + 1) = m * m.
+Proof. intros n m. intros H. rewrite -> H. rewrite -> actual_add_2. reflexivity. Qed.
+

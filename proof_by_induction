@@ -2,7 +2,7 @@ Theorem plus_n_O : forall n : nat, n = n + 0.
 Proof.
   intros n. induction n.
   - (* n = 0 *) reflexivity.
-  - (* n = S n' *) simpl. rewrite <- IHn.   reflexivity. 
+  - (* n = S n' *) simpl. rewrite <- IHn.   reflexivity.
 Qed.
 
 Theorem minus_diag : forall n,
@@ -22,20 +22,21 @@ intros n. induction n.
   - simpl. rewrite -> IHn. reflexivity. 
 Qed.
 
-Theorem plus_n_Sm : forall n m : nat,
-  S (n + m) = n + (S m).
-Proof. 
-  intros n m. induction n.
-  - simpl. reflexivity. 
-  - simpl. rewrite -> IHn. reflexivity. 
-Qed.
-
 (* S n = n + 1 *)
 Theorem n_plus_1 : forall n : nat,
   S n = n + 1.
 Proof. intros n. induction n.
   - simpl. reflexivity.
   - simpl. rewrite <- IHn. reflexivity.
+Qed.
+
+(* Induction should be done on the 'correct' variable. *)
+Theorem plus_n_Sm : forall n m : nat,
+  S (n + m) = n + (S m).
+Proof. 
+  intros n m. induction n.
+  - simpl. reflexivity. 
+  - simpl. rewrite -> IHn. reflexivity. 
 Qed.
 
 (* Induction on the other varialbe gets you stuck: *)
@@ -54,7 +55,16 @@ intros n m. induction n.
   - simpl. rewrite <- plus_n_Sm. rewrite -> IHn. reflexivity. 
 Qed.
 
-(* Code below belongs to section 'prrof within proofs. *)
+(* Here the induction also works on the variable m *)
+Theorem plus_comm_1 : forall n m : nat,
+  n + m = m + n.
+Proof.
+intros n m. induction m.
+  - simpl. rewrite <- plus_n_O. reflexivity.
+  - simpl. rewrite <- plus_n_Sm. rewrite -> IHm. reflexivity. 
+Qed.
+
+(* Code below belongs to section 'proof within proofs. *)
 
 (* This doesn't work because the rewrite statements does not where to apply the rewrite. *)
 Theorem plus_rearrange_firsttry : forall n m p q : nat,
@@ -82,6 +92,7 @@ Fixpoint evenb (n : nat) : bool :=
   | S n => negb (evenb n)
   end.
 
+(* What does simpl. do here? Does it use some buil  d-in function? *)
 Theorem evenb_S : forall n : nat,
   evenb (S n) = negb (evenb n).
 Proof. intros n. simpl. reflexivity. Qed.
@@ -97,7 +108,7 @@ end.
 true so that on can continue to work with it. *)
 Theorem double_neg : forall b : bool,
   negb (negb b) = b.
-Proof. intros b.  destruct b. 
+Proof. intros b. destruct b. 
   + simpl. reflexivity.
   + simpl. reflexivity.
 Qed.

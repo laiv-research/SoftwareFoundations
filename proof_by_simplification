@@ -2,8 +2,8 @@ Theorem zero_plus_n: forall n : nat, 0 + n = n.
 Proof. intros n. simpl. reflexivity. Qed.
 
 (* simpl. is not needed, because reflexivity can 
-   perform simplification by itself. So a shorter way 
-   to write the above Theorem is: *)
+   perform simplification by itself. So a shorter   
+   way to write the above Theorem is: *)
 Theorem zero_plus_n_short: forall n : nat, 0 + n = n.
 Proof. intros n. reflexivity. Qed.
 

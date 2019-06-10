@@ -54,7 +54,7 @@ Proof.
   - reflexivity.
   - reflexivity. Qed.
 
-Theorem andb_commutative'' :
+Theorem andb_commutative' :
   forall b c, andb b c = andb c b.
 Proof.
   intros [|] [|].
