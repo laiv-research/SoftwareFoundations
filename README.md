@@ -17,3 +17,9 @@ proof_by_induction, update for other files with additional examples and notes
 
 5. Meeting: 04.06.2019:
 Revision of the first sessions. Updates for existing files and additional notes and examples.
+
+6. Meeting: 11.06.2019:
+Repetition.
+
+7. Meeting: 21.06.2019:
+tba
