@@ -22,4 +22,7 @@ Revision of the first sessions. Updates for existing files and additional notes 
 Repetition.
 
 7. Meeting: 21.06.2019:
+Discussion and exercises.
+
+8. Meeting: 05.07.2019:
 tba
